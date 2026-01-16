@@ -16,9 +16,11 @@ public interface RolRepository extends JpaRepository<Rol, Long> {
 
 	@Query("""
 			    SELECT r FROM Rol r
-			    WHERE UPPER(u.nombre) LIKE UPPER(CONCAT('%', :filtro, '%'))
+			    WHERE UPPER(r.nombre) LIKE UPPER(CONCAT('%', :filtro, '%'))
 			""")
-	Page<Rol> buscarPorFiltro(@Param("filtro") String filtro, Pageable pageable);	
+	Page<Rol> buscarPorFiltro(@Param("filtro") String filtro, Pageable pageable);
+	
+	Boolean existsByNombre(String nombre);
 
 	Boolean existsByNombreAndIdNot(String nombre, Long id);
 

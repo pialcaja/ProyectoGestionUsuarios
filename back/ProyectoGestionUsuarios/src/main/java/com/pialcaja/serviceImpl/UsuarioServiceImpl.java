@@ -24,6 +24,8 @@ import com.pialcaja.repository.UsuarioRepository;
 import com.pialcaja.service.UsuarioService;
 import com.pialcaja.utils.TextoUtils;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
@@ -71,6 +73,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
+	@Transactional
 	public ResponseEntity<Map<String, Object>> registrarUsuarioDesdeAdmin(UsuarioMantenerPorAdminRequest request) {
 		Map<String, Object> respuesta = new HashMap<>();
 
@@ -137,6 +140,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
+	@Transactional
 	public ResponseEntity<Map<String, Object>> actualizarUsuarioDesdeAdmin(Long id,
 			UsuarioMantenerPorAdminRequest request) {
 		Map<String, Object> respuesta = new HashMap<>();
@@ -196,6 +200,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
+	@Transactional
 	public ResponseEntity<Map<String, Object>> eliminarUsuario(Long id) {
 		Map<String, Object> respuesta = new HashMap<>();
 
@@ -237,6 +242,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
+	@Transactional
 	public ResponseEntity<Map<String, Object>> recuperarUsuario(Long id) {
 		Map<String, Object> respuesta = new HashMap<>();
 
