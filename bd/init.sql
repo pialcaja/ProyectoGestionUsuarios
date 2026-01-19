@@ -34,5 +34,6 @@ insert into tb_rol(nombre, descripcion) values
                                                 
 insert into tb_usuario(nombre, apepa, apema, email, pwd, fecha_nacimiento, id_rol) values 
 	('Piero', 'Caro', 'Jara', 'piero@ejemplo.com', '$2a$10$RjRdnnaldjsLMjBDhlkwSecqNKGs5ZQ6GP882le/3USf3XOQAq82S', '1998-06-30', 1),
-	('Jennifer', 'Gutierrez', 'Marquez', 'jennifer@ejemplo.com', '$2a$10$RjRdnnaldjsLMjBDhlkwSecqNKGs5ZQ6GP882le/3USf3XOQAq82S', '1999-03-27', 2);
+	('Jennifer', 'Tully', 'Silva', 'jennifer@ejemplo.com', '$2a$10$RjRdnnaldjsLMjBDhlkwSecqNKGs5ZQ6GP882le/3USf3XOQAq82S', '2003-01-13', 2),
+	('Ana', 'Arja', 'Gayorma', 'ana@ejemplo.com', '$2a$10$RjRdnnaldjsLMjBDhlkwSecqNKGs5ZQ6GP882le/3USf3XOQAq82S', '1996-10-8', 2);
 
