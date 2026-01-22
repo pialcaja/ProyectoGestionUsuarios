@@ -1,5 +1,6 @@
 package com.pialcaja.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,10 @@ public class UsuarioController {
 	@PutMapping("/recuperar/{id}")
 	public ResponseEntity<Map<String, Object>> recuperar(@PathVariable Long id) {
 		return service.recuperarUsuario(id);
+	}
+	
+	@GetMapping("/roles")
+	public ResponseEntity<List<Map<String, Object>>> listarRoles() {
+		return service.listarRoles();
 	}
 }

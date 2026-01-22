@@ -33,4 +33,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	Boolean existsByEmailAndIdNot(String email, Long id);
 	
 	Optional<Usuario> findByEmailIgnoreCase(String email);
+	
+	Page<Usuario> findByEstado(Boolean estado, Pageable pageable);
 }
