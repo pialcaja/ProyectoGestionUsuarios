@@ -50,12 +50,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 			if (filtro != null && !filtro.isEmpty()) {
 				paginaUsuarios = usuarioRepo.buscarPorFiltro(filtro, estado, pageable);
 			} else {
-				paginaUsuarios = usuarioRepo.findAll(pageable);
+				paginaUsuarios = usuarioRepo.findByEstado(estado, pageable);
 			}
 
 			List<UsuarioListadoResponse> usuarios = paginaUsuarios.getContent().stream()
-					.map(u -> new UsuarioListadoResponse(u.getNombre(), u.getApepa(), u.getApema(), u.getEmail(),
-							u.getRol().getNombre()))
+					.map(u -> new UsuarioListadoResponse(u.getId(), u.getNombre(), u.getApepa(), u.getApema(), u.getEmail(),
+							u.getRol().getNombre(), u.getEstado()))
 					.toList();
 
 			respuesta.put("usuarios", usuarios);
