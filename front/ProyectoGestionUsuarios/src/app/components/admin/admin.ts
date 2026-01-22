@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Auth } from '../../services/auth';
+import { UsuarioList } from '../usuario/usuario-list/usuario-list';
 
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, UsuarioList],
   templateUrl: './admin.html',
   styleUrl: './admin.css',
 })
