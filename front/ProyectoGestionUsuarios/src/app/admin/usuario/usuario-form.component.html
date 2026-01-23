@@ -1,0 +1,46 @@
+<div class="modal-backdrop">
+    <div class="modal">
+        <h3>{{ esEdicion ? 'Editar Usuario' : 'Nuevo Usuario' }}</h3>
+
+        <form [formGroup]="form">
+            <input type="text" placeholder="Nombre" formControlName="nombre">
+            <small *ngIf="form.get('nombre')?.errors?.['soloLetras']">
+                Sólo debe contener letras*
+            </small>
+            <input type="text" placeholder="Apellido Paterno" formControlName="apepa">
+            <small *ngIf="form.get('apepa')?.errors?.['soloLetras']">
+                Sólo debe contener letras*
+            </small>
+            <input type="text" placeholder="Apellido Materno" formControlName="apema">
+            <small *ngIf="form.get('apema')?.errors?.['soloLetras']">
+                Sólo debe contener letras*
+            </small>
+            <input type="email" placeholder="Email" formControlName="email">
+            <small *ngIf="form.get('email')?.hasError('pattern')">
+                Email inválido*
+            </small>
+            <input type="password" placeholder="Contraseña" formControlName="pwd">
+            <small *ngIf="form.get('pwd')?.errors?.['passwordDebil']">
+                La contraseña debe ser de mínimo 7 dígitos y contener al menos:
+                1 mayúscula, 1 número y 1 caractér especial*
+            </small>
+            <input type="date" formControlName="fecha_nacimiento">
+            <small *ngIf="form.get('fecha_nacimiento')?.errors?.['menorEdad']">
+                Debe ser mayor de 18 años*
+            </small>
+            <small *ngIf="form.get('fecha_nacimiento')?.errors?.['mayor100']">
+                Edad máxima permitida: 100 años*
+            </small>
+            <select formControlName="idRol">
+                <option value="" selected>Seleccione rol</option>
+                <option *ngFor="let r of roles()" [value]="r.id">
+                    {{ r.nombre }}
+                </option>
+            </select>
+            <div class="acciones">
+                <button type="button" (click)="guardar()" [disabled]="form.invalid">Guardar</button>
+                <button type="button" (click)="cerrarModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>

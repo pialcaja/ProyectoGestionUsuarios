@@ -1,0 +1,15 @@
+<h2>Panel de Administrador</h2>
+<p>Bienvenido, {{ username }}</p>
+<nav>
+    <button (click)="vista = 'usuarios'">Usuarios</button>
+    <button (click)="vista = 'roles'">Roles</button>
+    <button *ngIf="isLoggedIn" (click)="logout()">Cerrar Sesión</button>
+</nav>
+<hr>
+<section *ngIf="vista === 'usuarios'">
+    <app-usuario-list></app-usuario-list>
+</section>
+
+<section *ngIf="vista === 'roles'">
+    <app-rol-list></app-rol-list>
+</section>

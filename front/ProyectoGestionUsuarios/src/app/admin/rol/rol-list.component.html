@@ -1,0 +1,61 @@
+<h3>Roles</h3>
+
+<button (click)="abrirCrear()">Nuevo Rol</button>
+
+<app-rol-form
+  *ngIf="mostrarForm"
+  [rolId]="rolIdSeleccionado"
+  (cerrar)="cerrarForm()"
+  (guardado)="recargar()"
+></app-rol-form>
+
+<div class="filtros">
+  <input
+    type="text"
+    placeholder="Buscar por nombre"
+    [(ngModel)]="filtro"
+    (keyup.enter)="aplicarFiltros()"
+  >
+
+  <button
+    (click)="aplicarFiltros()"
+    [disabled]="!filtro.trim()"
+  >
+    Buscar
+  </button>
+
+  <button (click)="limpiarFiltros()">Limpiar</button>
+</div>
+
+<table *ngIf="roles().length > 0">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of roles(); let i = index">
+      <td>{{ i + 1 + page * size }}</td>
+      <td>{{ r.nombre }}</td>
+      <td>
+        <button (click)="editar(r.id)">Editar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="roles().length === 0">
+  <p>No se encontraron roles.</p>
+</div>
+
+<div *ngIf="totalPaginas > 1 && roles().length > 0">
+  <button
+    *ngFor="let p of [].constructor(totalPaginas); let i = index"
+    (click)="irAPagina(i)"
+    [disabled]="page === i"
+  >
+    {{ i + 1 }}
+  </button>
+</div>

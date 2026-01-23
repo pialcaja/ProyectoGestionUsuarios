@@ -1,0 +1,70 @@
+<h3>Usuarios</h3>
+<button (click)="abrirCrear()">Nuevo Usuario</button>
+<app-usuario-form *ngIf="mostrarModal" [usuarioId]="usuarioIdSeleccionado" (cerrar)="cerrarModal()"
+    (guardado)="recargar()">
+</app-usuario-form>
+<div class="filtros">
+    <input type="text" placeholder="Nombre, email o rol" [(ngModel)]="filtro" >
+
+    <select [(ngModel)]="estado" >
+        <option [ngValue]="true">Activos</option>
+        <option [ngValue]="false">Inactivos</option>
+    </select>
+
+    <button (click)="aplicarFiltros()">Buscar</button>
+    <button (click)="limpiarFiltros()">Limpiar</button>
+</div>
+<table *ngIf="usuarios().length > 0">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let u of usuarios(); let i = index">
+            <td>{{ i + 1 + page * size }}</td>
+            <td>{{ u.nombre }} {{ u.apepa }} {{ u.apema }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.rol }}</td>
+            <td *ngIf="u.estado && u.id != 1">
+                <button (click)="verUsuario(u.id)">Ver</button>
+                <button (click)="editar(u.id)">Editar</button>
+                <button (click)="eliminar(u.id)">Eliminar</button>
+            </td>
+            <td *ngIf="!u.estado && u.id != 1">
+                <button (click)="recuperar(u.id)">Recuperar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div *ngIf="totalPaginas > 1 && usuarios().length > 0">
+    <button *ngFor="let p of [].constructor(totalPaginas); let i = index" (click)="irAPagina(i)"
+        [disabled]="page === i">
+        {{ i + 1 }}
+    </button>
+</div>
+<div *ngIf="usuarios().length === 0">
+    <p>No se encuentran registros con los filtros seleccionados.</p>
+</div>
+<!-- Modal ver usuario -->
+<ng-container *ngIf="mostrarModalVer()">
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h3>Detalles del Usuario</h3>
+      <p><strong>Nombre:</strong> {{ usuarioSeleccionado()?.nombre }}</p>
+      <p><strong>Apellido Paterno:</strong> {{ usuarioSeleccionado()?.apepa }}</p>
+      <p><strong>Apellido Materno:</strong> {{ usuarioSeleccionado()?.apema }}</p>
+      <p><strong>Email:</strong> {{ usuarioSeleccionado()?.email }}</p>
+      <p><strong>Rol:</strong> {{ usuarioSeleccionado()?.rol?.nombre || usuarioSeleccionado()?.rol }}</p>
+      <p><strong>Estado:</strong> {{ usuarioSeleccionado()?.estado ? 'Activo' : 'Inactivo' }}</p>
+      <p><strong>Fecha de nacimiento:</strong> {{ usuarioSeleccionado()?.fecha_nacimiento | fechaFormato }}</p>
+      <div class="acciones">
+        <button type="button" (click)="cerrarModalVer()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
