@@ -30,22 +30,28 @@ export class Login {
 
   login() {
     this.auth.login({ email: this.email, pwd: this.pwd }).subscribe({
-      next: () => {
-        const role = this.auth.getRole();
+      next: (res) => {
+        localStorage.setItem('access_token', res.token);
+        localStorage.setItem('refresh_token', res.refreshToken);
+        localStorage.setItem('role', res.rol);
+
+        const role = res.rol;
 
         if (this.returnUrl) {
           this.router.navigateByUrl(this.returnUrl);
           return;
         }
 
-        this.router.navigate(
-          role === 'ADMIN' ? ['/admin'] : ['/profile']
-        );
+        this.router.navigate(role === 'ADMIN' ? ['/admin'] : ['/profile']);
       },
       error: (err) => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('role');
+
         this.alert.error(
           'Error',
-          err.error?.mensaje || 'Acceso denegado'
+          err.error?.mensaje || 'Credenciales incorrectas'
         );
       }
     });
