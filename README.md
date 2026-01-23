@@ -33,8 +33,8 @@ Sistema de gestión de usuarios y roles con autenticación JWT, desarrollado con
   - `tb_rol` → almacena los roles (`ADMIN` y `CLIENTE`)
   - `tb_usuario` → almacena usuarios con relación a `tb_rol`
 - Usuario admin inicial configurado para pruebas:
-  - **Email:** `piero@ejemplo.com`
-  - **Contraseña:** `Piero123@`
+  - **Email:** `admin@demo.local`
+  - **Contraseña:** `Admin123@`
   - **Rol:** ADMIN
 
 > Todos los scripts de creación de tablas y datos base se encuentran en el repositorio.
