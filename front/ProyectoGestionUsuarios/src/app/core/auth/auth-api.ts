@@ -28,7 +28,6 @@ export class Auth {
 
   refreshToken() {
     const refresh = this.getRefreshToken();
-    console.log('🔄 Usando refresh token:', refresh);
 
     return this.http.post<any>(`${this.API}/refresh`, { refreshToken: refresh }).pipe(
       tap(resp => {
