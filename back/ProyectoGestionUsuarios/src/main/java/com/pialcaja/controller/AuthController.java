@@ -1,5 +1,7 @@
 package com.pialcaja.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +25,12 @@ public class AuthController {
 	private AuthService authService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {	
-		return ResponseEntity.status(HttpStatus.OK).body(authService.login(request));
+	public ResponseEntity<?> login(@RequestBody LoginRequest request) {	
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(authService.login(request));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("mensaje", "Credenciales incorrectas"));
+		}
 	}
 	
 	@PostMapping("/refresh")

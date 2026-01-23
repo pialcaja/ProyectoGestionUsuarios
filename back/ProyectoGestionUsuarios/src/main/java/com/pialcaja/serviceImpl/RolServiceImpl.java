@@ -44,7 +44,7 @@ public class RolServiceImpl implements RolService {
 			}
 			
 			List<RolListadoResponse> roles = paginaRoles.getContent().stream()
-					.map(r -> new RolListadoResponse(r.getNombre()))
+					.map(r -> new RolListadoResponse(r.getId(), r.getNombre()))
 					.toList();
 			
 			respuesta.put("roles", roles);
