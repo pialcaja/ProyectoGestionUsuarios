@@ -33,5 +33,4 @@ insert into tb_rol(nombre, descripcion) values
 	('CLIENTE', 'Usuario cliente de la aplicación');
                                                 
 insert into tb_usuario(nombre, apepa, apema, email, pwd, fecha_nacimiento, id_rol) values 
-	('Piero', 'Caro', 'Jara', 'piero@ejemplo.com', '$2a$10$RjRdnnaldjsLMjBDhlkwSecqNKGs5ZQ6GP882le/3USf3XOQAq82S', '1998-06-30', 1);
-
+	('Admin', 'Principal', 'Demo', 'admin@demo.local', '$2a$10$AfnOtg6lL2rPNdAK1GgqkeDJHwt3b2lnGGIbpexR6uuQxlbEv1Sg2', '2000-10-11', 1);
