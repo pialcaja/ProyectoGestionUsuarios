@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.pialcaja.utils.JwtUtils;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,6 +47,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		final String token = authHeader.substring(7);
 
+		if (token.isEmpty()) {
+			chain.doFilter(request, response);
+			return;
+		}
+
 		try {
 
 			final String username = jwtUtils.extractUsername(token);
@@ -72,6 +78,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.setContentType("application/json");
 			response.getWriter().write("{\"error\":\"Token expirado\"}");
+		} catch (IllegalArgumentException | JwtException ex) {
+			chain.doFilter(request, response);
 		}
 
 	}
