@@ -7,5 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class RolListadoResponse {
 
+	private Long id;
 	private String nombre;
 }

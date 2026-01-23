@@ -33,12 +33,17 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public AuthResponse login(LoginRequest request) {
 		
+		Usuario usuario = usuarioRepo.findByEmailIgnoreCase(request.getEmail())
+				.orElseThrow(() -> new RuntimeException("Credenciales inválidas"));
+		
+		if (!usuario.getEstado()) {
+			throw new RuntimeException("Usuario inactivo. Contacte al administrador");
+		}
+		
 		Authentication auth = authManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPwd()));
 		
 		UserDetails details = (UserDetails) auth.getPrincipal();
-		
-		Usuario usuario = usuarioRepo.findByEmailIgnoreCase(details.getUsername()).get();
 		
 		return new AuthResponse(jwtUtils.generateToken(details), jwtUtils.generateRefreshToken(details),
 				usuario.getId(), usuario.getNombre(), usuario.getEmail(), usuario.getRol().getNombre());
