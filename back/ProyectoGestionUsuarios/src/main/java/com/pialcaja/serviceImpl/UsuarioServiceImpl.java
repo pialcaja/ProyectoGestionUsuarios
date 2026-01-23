@@ -12,15 +12,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.pialcaja.dto.UsuarioActualizarRequest;
 import com.pialcaja.dto.UsuarioListadoResponse;
 import com.pialcaja.dto.UsuarioMantenerPorAdminRequest;
+import com.pialcaja.dto.UsuarioPerfilResponse;
 import com.pialcaja.model.Rol;
 import com.pialcaja.model.Usuario;
 import com.pialcaja.repository.RolRepository;
 import com.pialcaja.repository.UsuarioRepository;
+import com.pialcaja.security.CustomUserDetails;
 import com.pialcaja.service.UsuarioService;
 import com.pialcaja.utils.TextoUtils;
 
@@ -54,8 +59,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 
 			List<UsuarioListadoResponse> usuarios = paginaUsuarios.getContent().stream()
-					.map(u -> new UsuarioListadoResponse(u.getId(), u.getNombre(), u.getApepa(), u.getApema(), u.getEmail(),
-							u.getRol().getNombre(), u.getEstado()))
+					.map(u -> new UsuarioListadoResponse(u.getId(), u.getNombre(), u.getApepa(), u.getApema(),
+							u.getEmail(), u.getRol().getNombre(), u.getEstado()))
 					.toList();
 
 			respuesta.put("usuarios", usuarios);
@@ -155,7 +160,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 
 			Usuario usuario = usuarioOpt.get();
-			
+
 			if (usuario.getId() == 1) {
 				respuesta.put("mensaje", "El usuario principal no puede ser modificado");
 
@@ -214,7 +219,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 
 			Usuario usuario = usuarioOpt.get();
-			
+
 			if (usuario.getId() == 1) {
 				respuesta.put("mensaje", "El usuario principal no puede ser eliminado");
 
@@ -256,7 +261,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 
 			Usuario usuario = usuarioOpt.get();
-			
+
 			if (usuario.getId() == 1) {
 				respuesta.put("mensaje", "El usuario principal no puede ser recuperado");
 
@@ -294,6 +299,79 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		return ResponseEntity.status(HttpStatus.OK).body(roles);
 	}
+	
+	@Override
+	public ResponseEntity<Map<String, Object>> obtenerMiPerfil() {
+	    Map<String, Object> respuesta = new HashMap<>();
+	    try {
+	        Long usuarioId = getUsuarioIdFromToken();
+
+	        Optional<Usuario> usuarioOpt = usuarioRepo.findById(usuarioId);
+	        if (usuarioOpt.isEmpty()) {
+	            respuesta.put("mensaje", "Usuario no encontrado");
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
+	        }
+
+	        Usuario usuario = usuarioOpt.get();
+
+	        UsuarioPerfilResponse dto = UsuarioPerfilResponse.fromEntity(usuario);
+
+	        respuesta.put("usuario", dto);
+	        return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+	    } catch (Exception e) {
+	        respuesta.put("mensaje", "Error al obtener usuario: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
+	    }
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<Map<String, Object>> actualizarMiPerfil(UsuarioActualizarRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		try {
+			Long usuarioId = getUsuarioIdFromToken();
+			
+			Optional<Usuario> usuarioOpt = usuarioRepo.findById(usuarioId);
+
+			if (usuarioOpt.isEmpty()) {
+				respuesta.put("mensaje", "Usuario no encontrado");
+
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
+			}
+
+			Usuario usuario = usuarioOpt.get();
+
+			if (usuario.getId() == 1) {
+				respuesta.put("mensaje", "El usuario principal no puede ser modificado");
+
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
+			}
+
+			validarEmailDuplicado(request.getEmail(), usuarioId);
+
+			usuario.setNombre(TextoUtils.formatoPrimeraLetraMayuscula(request.getNombre()));
+			usuario.setApepa(TextoUtils.formatoPrimeraLetraMayuscula(request.getApepa()));
+			usuario.setApema(TextoUtils.formatoPrimeraLetraMayuscula(request.getApema()));
+			usuario.setEmail(TextoUtils.formatoTodoMinuscula(request.getEmail()));
+
+			if (request.getPwd() != null && !request.getPwd().isBlank()) {
+				usuario.setPwd(passwordEncoder.encode(request.getPwd()));
+			}
+
+			usuario.setFecha_nacimiento(request.getFecha_nacimiento());
+
+			usuarioRepo.save(usuario);
+
+			respuesta.put("mensaje", "Información actualizada correctamente");
+
+			return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+		} catch (Exception e) {
+			respuesta.put("mensaje", "Error al actualizar información: " + e.getMessage());
+
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
+		}
+	}
 
 	private void validarEmailDuplicado(String email, Long idExcluido) {
 		email = TextoUtils.formatoTodoMinuscula(email);
@@ -305,4 +383,24 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new RuntimeException("Email ya enlazado a otro usuario");
 		}
 	}
+
+	private Long getUsuarioIdFromToken() {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth == null || !auth.isAuthenticated()) {
+	        throw new RuntimeException("Usuario no autenticado");
+	    }
+
+	    Object principal = auth.getPrincipal();
+	    if (principal instanceof CustomUserDetails) {
+	        return ((CustomUserDetails) principal).getId();
+	    } else if (principal instanceof String) {
+	        String username = (String) principal;
+	        Usuario usuario = usuarioRepo.findByEmailIgnoreCase(username)
+	                .orElseThrow(() -> new RuntimeException("Usuario no encontrado para username: " + username));
+	        return usuario.getId();
+	    } else {
+	        throw new RuntimeException("Principal no es del tipo esperado: " + principal.getClass().getName());
+	    }
+	}
+
 }

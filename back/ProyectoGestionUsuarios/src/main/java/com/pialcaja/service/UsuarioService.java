@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.pialcaja.dto.UsuarioActualizarRequest;
 import com.pialcaja.dto.UsuarioMantenerPorAdminRequest;
 
 public interface UsuarioService {
@@ -22,4 +23,8 @@ public interface UsuarioService {
 	public ResponseEntity<Map<String, Object>> recuperarUsuario(Long id);
 
 	public ResponseEntity<List<Map<String, Object>>> listarRoles();
+
+	public ResponseEntity<Map<String, Object>> actualizarMiPerfil(UsuarioActualizarRequest request);
+	
+	public ResponseEntity<Map<String, Object>> obtenerMiPerfil();
 }

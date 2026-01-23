@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pialcaja.dto.UsuarioActualizarRequest;
 import com.pialcaja.dto.UsuarioMantenerPorAdminRequest;
 import com.pialcaja.service.UsuarioService;
 
@@ -60,6 +61,16 @@ public class UsuarioController {
 	@PutMapping("/recuperar/{id}")
 	public ResponseEntity<Map<String, Object>> recuperar(@PathVariable Long id) {
 		return service.recuperarUsuario(id);
+	}
+	
+	@GetMapping("/me")
+	public ResponseEntity<Map<String, Object>> obtenerMiPerfil() {
+		return service.obtenerMiPerfil();
+	}
+	
+	@PutMapping("/me")
+	public ResponseEntity<Map<String, Object>> actualizarMiPerfil(@RequestBody UsuarioActualizarRequest request) {
+		return service.actualizarMiPerfil(request);
 	}
 	
 	@GetMapping("/roles")
