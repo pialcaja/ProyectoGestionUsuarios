@@ -1,0 +1,28 @@
+<div class="modal-backdrop">
+  <div class="modal">
+    <h3>{{ esEdicion ? 'Editar Rol' : 'Nuevo Rol' }}</h3>
+
+    <form [formGroup]="form">
+
+      <input type="text" placeholder="Nombre del rol" formControlName="nombre">
+
+      <small *ngIf="form.get('nombre')?.errors?.['soloLetras']">
+        Sólo debe contener letras*
+      </small>
+      <textarea placeholder="Descripción" formControlName="descripcion"></textarea>
+
+      <small *ngIf="form.get('descripcion')?.errors?.['soloLetras']">
+        Sólo debe contener letras*
+      </small>
+      <div class="acciones">
+        <button type="button" (click)="guardar()" [disabled]="form.invalid">
+          Guardar
+        </button>
+
+        <button type="button" (click)="cerrarForm()">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

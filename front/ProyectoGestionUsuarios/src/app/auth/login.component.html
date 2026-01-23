@@ -1,0 +1,26 @@
+<div class="login-bg">
+    <div class="login-container fade-in">
+        <div class="login-card">
+            <h2>Iniciar Sesión</h2>
+            <hr>
+            Para ingresar como administrador utiliza estas credenciales:
+            <br>
+            Email: piero@ejemplo.com
+            <br>
+            Password: Piero123@
+            <hr>
+            <form #loginForm="ngForm" (ngSubmit)="login()">
+
+                <label>Email:</label>
+                <input type="email" name="email" [(ngModel)]="email" required />
+
+                <label>Contraseña:</label>
+                <input type="password" name="password" [(ngModel)]="pwd" required />
+
+                <button class="btn-primary" type="submit" [disabled]="loginForm.invalid">
+                    Ingresar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
