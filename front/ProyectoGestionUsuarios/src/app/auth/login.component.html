@@ -1,26 +1,46 @@
+<!-- Contenedor principal: centra el login y aplica el fondo con gradiente -->
 <div class="login-bg">
-    <div class="login-container fade-in">
-        <div class="login-card">
-            <h2>Iniciar Sesión</h2>
-            <hr>
-            Para ingresar como administrador utiliza estas credenciales:
-            <br>
-            Email: admin@demo.local
-            <br>
-            Password: Admin123@
-            <hr>
-            <form #loginForm="ngForm" (ngSubmit)="login()">
-
-                <label>Email:</label>
-                <input type="email" name="email" [(ngModel)]="email" required />
-
-                <label>Contraseña:</label>
-                <input type="password" name="password" [(ngModel)]="pwd" required />
-
-                <button class="btn-primary" type="submit" [disabled]="loginForm.invalid">
-                    Ingresar
-                </button>
-            </form>
+    <!-- Tarjeta del login (card blanca con sombra y animación) -->
+    <div class="login-card fade-in">
+        <!-- Avatar / icono superior decorativo -->
+        <div class="login-avatar">
+            <span class="material-icons">person</span>
+        </div>
+        <!-- Título principal -->
+        <h2>Bienvenido</h2>
+        <!-- Texto secundario -->
+        <p class="subtitle">Inicia sesión en tu cuenta</p>
+        <!-- Formulario Angular con template-driven forms -->
+        <!-- ngSubmit ejecuta el método login() -->
+        <form #loginForm="ngForm" (ngSubmit)="login()">
+            <!-- Campo email -->
+            <!-- ngModel enlaza el input con la variable email del componente -->
+            <div class="form-group">
+                <span class="material-icons">mail</span>
+                <input type="email" name="email" placeholder="Email" [(ngModel)]="email" required />
+            </div>
+            <!-- Campo contraseña -->
+            <!-- ngModel enlaza el input con la variable pwd -->
+            <div class="form-group">
+                <span class="material-icons">lock</span>
+                <input [type]="showPassword ? 'text' : 'password'" name="password" placeholder="Contraseña"
+                    [(ngModel)]="pwd" required />
+                <!-- Botón mostrar / ocultar -->
+                <span *ngIf="pwd" class="material-icons toggle-password" (click)="togglePassword()">
+                    {{ showPassword ? 'visibility_off' : 'visibility' }}
+                </span>
+            </div>
+            <!-- Botón de envío -->
+            <!-- Se deshabilita si el formulario es inválido -->
+            <button class="btn-login" type="submit" [disabled]="loginForm.invalid">
+                Ingresar
+            </button>
+        </form>
+        <!-- Información de credenciales demo -->
+        <div class="demo-info">
+            <strong>Demo admin:</strong><br />
+            admin@demo.local<br />
+            Admin123@
         </div>
     </div>
 </div>
