@@ -1,7 +1,63 @@
-<p>
-    BIENVENIDO AL SISTEMA DE GESTIÓN DE USUARIOS Y ROLES
-</p>
-<hr>
-<button>
-    <a routerLink="/login">Iniciar Sesión</a>
-</button>
+<div class="home-bg">
+    <div class="home-card fade-in">
+        <!-- Título principal -->
+        <h1>Proyecto Gestión de Usuarios</h1>
+        <p class="subtitle">
+            Sistema de gestión de usuarios y roles con autenticación JWT
+        </p>
+        <!-- Botón principal -->
+        <button class="btn-primary" routerLink="/login">
+            Iniciar Sesión
+        </button>
+        <hr />
+        <!-- Sección de información del proyecto -->
+        <div class="info-section">
+            <h3>📌 Descripción</h3>
+            <p>
+                Aplicación web desarrollada con <strong>Spring Boot</strong> y
+                <strong>Angular</strong> que permite la administración de usuarios y
+                roles de forma segura mediante autenticación JWT.
+            </p>
+        </div>
+        <div class="info-section">
+            <h3>⚙️ Tecnologías</h3>
+            <div class="tech-grid">
+                <div>
+                    <strong>Backend</strong>
+                    <ul>
+                        <li>Java 21</li>
+                        <li>Spring Boot 3.5</li>
+                        <li>Spring Security + JWT</li>
+                        <li>Spring Data JPA / JDBC</li>
+                        <li>MySQL 8</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong>Frontend</strong>
+                    <ul>
+                        <li>Angular 21</li>
+                        <li>TypeScript</li>
+                        <li>RxJS</li>
+                        <li>SweetAlert2</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="info-section">
+            <h3>🗄️ Base de Datos</h3>
+            <ul>
+                <li><strong>Nombre:</strong> bd_gestion_usuarios</li>
+                <li><strong>tb_usuario:</strong> usuarios del sistema</li>
+                <li><strong>tb_rol:</strong> roles (ADMIN / CLIENTE)</li>
+            </ul>
+        </div>
+        <div class="info-section demo-info">
+            <h3>🔐 Usuario Demo</h3>
+            <p>
+                <strong>Email:</strong> admin@demo.local<br />
+                <strong>Contraseña:</strong> Admin123@<br />
+                <strong>Rol:</strong> ADMIN
+            </p>
+        </div>
+    </div>
+</div>
