@@ -1,68 +1,88 @@
-<div *ngIf="perfil(); else cargando">
-  <h2>Hola, {{ perfil()?.nombre }}!</h2>
-  <p>Nombre: {{ perfil()?.nombre }}</p>
-  <p>Apellido paterno: {{ perfil()?.apepa }}</p>
-  <p>Apellido materno: {{ perfil()?.apema }}</p>
-  <p>Email: {{ perfil()?.email }}</p>
-  <p>Fecha de nacimiento: {{ perfil()?.fecha_nacimiento }}</p>
-
-  <button *ngIf="!mostrarFormulario()" (click)="mostrarFormActualizar()">
-    Actualizar mis datos
-  </button>
+<div class="profile-bg">
+  <!-- CARD PERFIL -->
+  <div class="profile-card fade-in">
+    <!-- PERFIL (LECTURA) -->
+    <ng-container *ngIf="perfil(); else cargando">
+      <h2>Hola, {{ perfil()?.nombre }} 👋</h2>
+      <p class="subtitle">Información de tu perfil</p>
+      <div class="profile-info">
+        <p><strong>Nombre:</strong> {{ perfil()?.nombre }}</p>
+        <p><strong>Apellido paterno:</strong> {{ perfil()?.apepa }}</p>
+        <p><strong>Apellido materno:</strong> {{ perfil()?.apema }}</p>
+        <p><strong>Email:</strong> {{ perfil()?.email }}</p>
+        <p><strong>Fecha de nacimiento:</strong> {{ perfil()?.fecha_nacimiento }}</p>
+      </div>
+      <div class="actions">
+        <button class="btn-primary" *ngIf="!mostrarFormulario()" (click)="mostrarFormActualizar()">
+          Actualizar mis datos
+        </button>
+        <button class="btn-secondary" (click)="logout()">
+          Cerrar Sesión
+        </button>
+      </div>
+    </ng-container>
+    <!-- CARGANDO -->
+    <ng-template #cargando>
+      <p class="loading">Cargando perfil...</p>
+    </ng-template>
+  </div>
+  <!-- CARD FORMULARIO -->
+  <div class="profile-card fade-in" *ngIf="mostrarFormulario() && perfil()">
+    <h3>Actualizar Perfil</h3>
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input formControlName="nombre" type="text" />
+        <small *ngIf="form.get('nombre')?.errors?.['soloLetras']">
+          Sólo debe contener letras*
+        </small>
+      </div>
+      <div class="form-group">
+        <label>Apellido Paterno</label>
+        <input formControlName="apepa" type="text" />
+        <small *ngIf="form.get('apepa')?.errors?.['soloLetras']">
+          Sólo debe contener letras*
+        </small>
+      </div>
+      <div class="form-group">
+        <label>Apellido Materno</label>
+        <input formControlName="apema" type="text" />
+        <small *ngIf="form.get('apema')?.errors?.['soloLetras']">
+          Sólo debe contener letras*
+        </small>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input formControlName="email" type="email" />
+        <small *ngIf="form.get('email')?.hasError('pattern')">
+          Email inválido*
+        </small>
+      </div>
+      <div class="form-group">
+        <label>Contraseña (opcional)</label>
+        <input formControlName="pwd" type="password" />
+        <small *ngIf="form.get('pwd')?.errors?.['passwordDebil']">
+          Mínimo 7 caracteres, mayúscula, número y carácter especial*
+        </small>
+      </div>
+      <div class="form-group">
+        <label>Fecha de nacimiento</label>
+        <input formControlName="fecha_nacimiento" type="date" />
+        <small *ngIf="form.get('fecha_nacimiento')?.errors?.['menorEdad']">
+          Debe ser mayor de 18 años*
+        </small>
+        <small *ngIf="form.get('fecha_nacimiento')?.errors?.['mayor100']">
+          Edad máxima permitida: 100 años*
+        </small>
+      </div>
+      <div class="actions">
+        <button class="btn-primary" type="submit" [disabled]="form.invalid">
+          Guardar cambios
+        </button>
+        <button class="btn-secondary" type="button" (click)="ocultarForm()">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
-
-<ng-template #cargando>
-  <p>Cargando perfil...</p>
-</ng-template>
-
-<div *ngIf="mostrarFormulario() && perfil()">
-  <form [formGroup]="form" (ngSubmit)="guardar()">
-
-    <label>Nombre:</label>
-    <input formControlName="nombre" type="text" />
-    <small *ngIf="form.get('nombre')?.errors?.['soloLetras']">
-                Sólo debe contener letras*
-            </small>
-
-    <label>Apellido Paterno:</label>
-    <input formControlName="apepa" type="text" />
-    <small *ngIf="form.get('apepa')?.errors?.['soloLetras']">
-                Sólo debe contener letras*
-            </small>
-
-    <label>Apellido Materno:</label>
-    <input formControlName="apema" type="text" />
-    <small *ngIf="form.get('apema')?.errors?.['soloLetras']">
-                Sólo debe contener letras*
-            </small>
-
-    <label>Email:</label>
-    <input formControlName="email" type="email" />
-    <small *ngIf="form.get('email')?.hasError('pattern')">
-                Email inválido*
-            </small>
-
-    <label>Contraseña (opcional):</label>
-    <input formControlName="pwd" type="password" />
-    <small *ngIf="form.get('pwd')?.errors?.['passwordDebil']">
-                La contraseña debe ser de mínimo 7 dígitos y contener al menos:
-                1 mayúscula, 1 número y 1 caractér especial*
-            </small>
-
-    <label>Fecha de nacimiento:</label>
-    <input formControlName="fecha_nacimiento" type="date" />
-    <small *ngIf="form.get('fecha_nacimiento')?.errors?.['menorEdad']">
-                Debe ser mayor de 18 años*
-            </small>
-            <small *ngIf="form.get('fecha_nacimiento')?.errors?.['mayor100']">
-                Edad máxima permitida: 100 años*
-            </small>
-
-    <div class="acciones">
-      <button type="submit" [disabled]="form.invalid">Actualizar Perfil</button>
-      <button type="button" (click)="ocultarForm()">Cancelar</button>
-    </div>
-  </form>
-</div>
-
-<button (click)="logout()">Cerrar Sesión</button>
