@@ -1,0 +1,120 @@
+/* Fondo */
+.profile-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6ea8fe, #b983ff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+}
+
+/* Card */
+.profile-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 720px;
+  padding: 2.5rem 2rem;
+  border-radius: 22px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Títulos */
+h2, h3 {
+  margin-top: 0;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Info perfil */
+.profile-info p {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+}
+
+/* Formularios */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+input {
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+input:focus {
+  border-color: #6ea8fe;
+}
+
+small {
+  color: #d32f2f;
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+/* Botones */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6ea8fe, #b983ff);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.8rem;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #333;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.8rem;
+  cursor: pointer;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  color: #555;
+}
+
+/* Animación */
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 2rem 1.5rem;
+  }
+}
